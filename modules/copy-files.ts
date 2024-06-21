@@ -8,8 +8,11 @@ export default defineNuxtModule({
         const source = "./node_modules/pspdfkit/dist/pspdfkit-lib";
         const desitination = "./public/pspdfkit-lib";
 
-        await fs.copy(source, desitination);
-        console.log("Files copied before build!");
+        // when path destination not existing, run script copy
+        if (!fs.existsSync(desitination)) {
+          await fs.copy(source, desitination);
+          console.log("Files copied before build!");
+        }
       } catch (err) {
         console.error("Error copying files:", err);
       }
