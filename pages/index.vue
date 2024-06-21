@@ -14,6 +14,10 @@ const handleReset = () => {
   }
 };
 
+const handleOpenFile = () => {
+  refInput.value?.click();
+};
+
 const openDocument = (event: any) => {
   if (pdfFile.value && pdfFile.value.startsWith("blob:")) {
     window.URL.revokeObjectURL(pdfFile.value);
@@ -24,18 +28,30 @@ const openDocument = (event: any) => {
 
 <template>
   <div id="app">
-    <label for="file-upload" class="custom-file-upload"> Open PDF </label>
-    <input
-      ref="refInput"
-      id="file-upload"
-      type="file"
-      @change="openDocument"
-      class="btn"
-    />
+    <nav class="py-5 flex justify-between items-center px-5">
+      <h3 class="text-white text-xl">PSPDFkit Nuxt 3</h3>
 
-    <UButton v-if="!pdfFile.includes('blank')" class="ms-2" @click="handleReset"
-      >Reset</UButton
-    >
+      <div>
+        <input
+          ref="refInput"
+          id="file-upload"
+          type="file"
+          class="hidden"
+          @change="openDocument"
+        />
+
+        <template v-if="pdfFile.includes('blank')">
+          <UButton size="lg" class="ms-2" @click="handleOpenFile"
+            >Open File</UButton
+          >
+        </template>
+        <template v-else>
+          <UButton size="lg" variant="outline" class="ms-2" @click="handleReset"
+            >Reset</UButton
+          >
+        </template>
+      </div>
+    </nav>
 
     <PSPDFKitContainer :pdfFile="pdfFile" @loaded="handleLoaded" />
   </div>
